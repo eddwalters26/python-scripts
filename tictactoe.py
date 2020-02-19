@@ -38,15 +38,7 @@ def display_board(board):
     for row in board:
         cellCount = 0
         for cell in row:
-            """if cell == 0:
-                txt = "   "
-            elif cell == 1:
-                txt = " X "
-            else:
-                txt = " O "
-            """
             txt = " " + playerDict[cell] + " "
-
             if cellCount < boardSize - 1:
                 txt += "|"
             cellCount += 1
