@@ -38,12 +38,14 @@ def display_board(board):
     for row in board:
         cellCount = 0
         for cell in row:
-            if cell == 0:
+            """if cell == 0:
                 txt = "   "
             elif cell == 1:
                 txt = " X "
             else:
                 txt = " O "
+            """
+            txt = " " + playerDict[cell] + " "
 
             if cellCount < boardSize - 1:
                 txt += "|"
@@ -58,15 +60,15 @@ def display_board(board):
 
 def getPlayer(xPlayerTurn):
     if xPlayerTurn == True:
-        player = "X"
+        playerValue = 1
     else:
-        player = "O"
-    return player
+        playerValue = -1
+    return playerValue
         
 def playerTurn(xPlayerTurn):
-    player = getPlayer(xPlayerTurn)
+    playerValue = getPlayer(xPlayerTurn)
     txt = "Your move {}"
-    print(txt.format(player))
+    print(txt.format(playerDict[playerValue]))
     try:
         row, col = input("Enter move (row, column):").split(',', maxsplit=1)
     except:
@@ -81,23 +83,19 @@ def playerMove(row, col, xPlayerTurn):
     except:
         print("Please enter a integer value")
         return False
-    player = getPlayer(xPlayerTurn)
-    if xPlayerTurn == True:
-        playerValue = 1
-    else:
-        playerValue = -1
-
+    playerValue = getPlayer(xPlayerTurn)
+    
     try:
         if board[iRow][iCol] != 0:
             invalidMoveTxt = "Invalid move by {}"
-            print(invalidMoveTxt.format(player))
+            print(invalidMoveTxt.format(playerDict[playerValue]))
             return False
         else:
             board[iRow][iCol] = playerValue
             return True
     except:
         invalidMoveTxt = "Invalid move by {}"
-        print(invalidMoveTxt.format(player))
+        print(invalidMoveTxt.format(playerDict[playerValue]))
         return False
 
 def checkWin(board, winConditions):
@@ -139,9 +137,9 @@ def gameFunction(board, winConditions):
         bGameOver = checkWin(board, winConditions)
 
         if bGameOver == True:
-            player = getPlayer(xPlayerTurn)
+            playerValue = getPlayer(xPlayerTurn)
             txt = "Congratulations player {} you have won"
-            print(txt.format(player))
+            print(txt.format(playerDict[playerValue]))
             break
 
         bMoveAvailable = checkBoardFull(board)
@@ -154,15 +152,26 @@ def gameFunction(board, winConditions):
 
     display_board(board)
 
+playerDict = {
+    -1: "O",
+    0: " ",
+    1: "X"
+}
 bPlayAgain = True
 while bPlayAgain == True:
-    boardSize = 4
-    board = generateBoard(boardSize)
-    winConditions = generateWinConditions(boardSize)
+    try:
+        boardSize = int(input("Please enter size of board: "))
+        if boardSize < 2 or boardSize > 10:
+            raise Exception()
+    except:
+        print("Please enter a valid board size between 2 and 10")
+    else:    
+        board = generateBoard(boardSize)
+        winConditions = generateWinConditions(boardSize)
 
-    gameFunction(board, winConditions)
-    sPlayAgain = input("Do you want to play again (y/n)?")
-    print(sPlayAgain.lower())
-    if sPlayAgain.lower() == "n":
-        bPlayAgain == False
-        break
+        gameFunction(board, winConditions)
+        sPlayAgain = input("Do you want to play again (y/n)?")
+        print(sPlayAgain.lower())
+        if sPlayAgain.lower() == "n":
+            bPlayAgain == False
+            break
