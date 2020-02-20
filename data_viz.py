@@ -32,7 +32,6 @@ columnList = ["Team", "Passing Yds", "Rushing Yds"]
 dfNflTeamTotals[columnList].plot.bar(x="Team", rot=90, colormap='winter')
 dfNflTeamTotals[columnList].plot.bar(x="Team", rot=90, stacked=True, colormap='winter')
 
-columnList = ["Passing YPA", "Rushing YPA"]
 scatterSize = dfNflTeamTotals["Wins"] * 20
 dfNflTeamTotals.plot.scatter(x="Passing YPA", y="Rushing YPA", c="Wins", s=scatterSize, colormap='winter')
 plt.show()
