@@ -49,18 +49,10 @@ def display_board(board):
             print(txt)
         x += 1
     print("\n")
-
-def getPlayer(xPlayerTurn):
-    if xPlayerTurn == True:
-        playerValue = 1
-    else:
-        playerValue = -1
-    return playerValue
         
-def playerTurn(xPlayerTurn):
-    playerValue = getPlayer(xPlayerTurn)
+def playerTurn(iPlayerTurn):
     txt = "Your move {}"
-    print(txt.format(playerDict[playerValue]))
+    print(txt.format(playerDict[iPlayerTurn]))
     try:
         row, col = input("Enter move (row, column):").split(',', maxsplit=1)
     except:
@@ -68,26 +60,25 @@ def playerTurn(xPlayerTurn):
     else:
         return True, row, col
 
-def playerMove(row, col, xPlayerTurn):
+def playerMove(row, col, iPlayerTurn):
     try:
         iRow = int(row) - 1
         iCol = int(col) - 1
     except:
         print("Please enter a integer value")
         return False
-    playerValue = getPlayer(xPlayerTurn)
-    
+      
     try:
         if board[iRow][iCol] != 0:
             invalidMoveTxt = "Invalid move by {}"
-            print(invalidMoveTxt.format(playerDict[playerValue]))
+            print(invalidMoveTxt.format(playerDict[iPlayerTurn]))
             return False
         else:
-            board[iRow][iCol] = playerValue
+            board[iRow][iCol] = iPlayerTurn
             return True
     except:
         invalidMoveTxt = "Invalid move by {}"
-        print(invalidMoveTxt.format(playerDict[playerValue]))
+        print(invalidMoveTxt.format(playerDict[iPlayerTurn]))
         return False
 
 def checkWin(board, winConditions):
@@ -111,7 +102,7 @@ def checkBoardFull(board):
     return moveAvailable
 
 def gameFunction(board, winConditions):
-    xPlayerTurn = False
+    iPlayerTurn = -1
     bGameOver = False
     bMoveAvailable = True
 
@@ -122,16 +113,15 @@ def gameFunction(board, winConditions):
 
         while validMove == False:
             while validMoveInput == False:
-                validMoveInput, row, col = playerTurn(xPlayerTurn)
+                validMoveInput, row, col = playerTurn(iPlayerTurn)
             validMoveInput = False
-            validMove = playerMove(row, col, xPlayerTurn)
+            validMove = playerMove(row, col, iPlayerTurn)
 
         bGameOver = checkWin(board, winConditions)
 
         if bGameOver == True:
-            playerValue = getPlayer(xPlayerTurn)
             txt = "Congratulations player {} you have won"
-            print(txt.format(playerDict[playerValue]))
+            print(txt.format(playerDict[iPlayerTurn]))
             break
 
         bMoveAvailable = checkBoardFull(board)
@@ -140,7 +130,7 @@ def gameFunction(board, winConditions):
             txt = "No more moves the game is tied"
             print(txt)
             break
-        xPlayerTurn = not(xPlayerTurn)
+        playerTurn *= -1 
 
     display_board(board)
 
