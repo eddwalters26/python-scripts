@@ -11,3 +11,6 @@ Trying out pandas to read CSV compute aggregations and plot data
 
 ChangeCapture
 A class for comparing a before and after dataset and outputing a delta change dataset
+
+staging
+An example of using the ChangeCapture class to calculate the delta for a file
